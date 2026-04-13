@@ -1,0 +1,44 @@
+{% load static %}
+<a class="navbar-brand" href="/">
+    <img style="height: 45px; background-color: #fff;" src="{% static 'hyBit_logo.png' %}"/>
+    <img style="width:45px;height: 45px;" src="{% static 'OpenEnergyFamily_Logo_OpenEnergyPlatform_untitled_white.svg' %}"/>
+</a>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/dataedit/schemas">Database</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/factsheets/frameworks/">Framework Factsheet</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/factsheets/models/">Model Factsheet</a>
+        </li>
+        <!--
+        <li class="nav-item">
+            <a class="nav-link" href="/scenario-bundles/main">Scenario Bundle</a>
+        </li>
+        -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ EXTERNAL_URLS.tutorials_index }}" target="_blank">Academy <i class="fas fa-external-link-alt"></i></a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" href="https://openenergy-platform.org/ontology/" target="_blank">
+                OEO-Ontology <i class="fas fa-external-link-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAbout" role="button"
+               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                About
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
+                <!--<a class="dropdown-item" href="/about/">Overview</a>-->
+                <a class="dropdown-item" href="{{ EXTERNAL_URLS.compendium }}" target="_blank"><i class="fas fa-external-link-alt"></i> Compendium</a>
+                <a class="dropdown-item" href="{{ EXTERNAL_URLS.mkdocs }}" target="_blank"><i class="fas fa-external-link-alt"></i> Developer Documentation</a>
+                <a class="dropdown-item" href="{{ EXTERNAL_URLS.readthedocs }}" target="_blank"><i class="fas fa-external-link-alt"></i> REST-API Documentation</a>
+                <a class="dropdown-item" href="{{ EXTERNAL_URLS.tutorials_faq }}" target="_blank"><i class="fas fa-external-link-alt"></i> FAQ</a>
+            </div>
+        </li>
+    </ul>
+</div>
