@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.views.generic import View
 
+from base.settings_hybit import HOME_HYBIT_LINKS, HOME_HYBIT_CONTACTS
+
 try:
     import oeplatform.securitysettings as sec
 except Exception:
@@ -66,6 +68,8 @@ def read_version_changes():
 class Welcome(View):
     def get(self, request):
         context = read_version_changes()
+        context['links'] = HOME_HYBIT_LINKS
+        context['contacts'] = HOME_HYBIT_CONTACTS
         return render(request, "base/index.html", context)
 
 

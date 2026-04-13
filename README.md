@@ -1,3 +1,10 @@
+# hyBit Instance of the Open Energy Plattform (OEP)
+This instance has a few update from the original open energy platform.
+
+For the correct build, please update the base/settings_hybit.py (or ensure the build environment has an env var HYBIT_CONFIG with the necessary content).
+
+# Original README
+
 | Workflow        | Status-Badge & Link                                                                                                                                                                                                  |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Automated tests | [![Automated tests](https://github.com/OpenEnergyPlatform/oeplatform/actions/workflows/automated-testing.yaml/badge.svg)](https://github.com/OpenEnergyPlatform/oeplatform/actions/workflows/automated-testing.yaml) |
