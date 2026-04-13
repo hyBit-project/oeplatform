@@ -28,10 +28,15 @@
     {% endif %}
   </div>
   <br>
-  <div>
+  <p>
     Find a detailed description for all fields of the OEMetaData visible on <a href="{{oem_key_desc}}" target="_blank">GitHub</a>.
     For a brief introduction on how to work with the oemetadata and the OEMetaBuilder tool find our <a href="{{oemetadata_tutorial}}" target="_blank">tutorial</a> in the academy.
-  </div>
+  </p>
+    <p>
+        <strong>Hinweise hyBit</strong><br />
+        Bitte stellt sicher, dass für eure Daten entsprechende Informationen zur Verortung (Spatial) hinterlegt sind,
+        da diese später in der Transformationsplattform genutzt werden sollen.
+    </p>
 </div>
 <div class=" d-flex justify-content-center">
     <div class="spinner-border text-primary m-5 d-none" role="status" id="metaedit-loading">
@@ -48,7 +53,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row px-4">
   <div class="col">
       <form iv id="metaedit-form">
           <!-- placeholder -->

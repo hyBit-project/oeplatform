@@ -67,7 +67,7 @@
                             {% endif %}
                             {% endcomment %}
                             <div class="profile-table-card__link">
-                                <a href="/dataedit/view/{{ table.schema }}/{{ table.name }}">{% if table.table_label %} {{ table.table_label }} {% else %} {{ table.name }} {% endif %}</a>
+                                <a href="/dataedit/view/{{ table.schema }}/{{ table.name }}">{% if table.oemetadata %}{{ table.oemetadata.title }}<br /><small class="text-muted">{{ table.oemetadata.name }}</small>{% else %}Tabelle &raquo;{{ table.name }}&laquo; {% endif %}</a>
                             </div>
                         </div>
                         
@@ -212,7 +212,7 @@
                             {% endif %}
                             {% endcomment %}
                             <div class="profile-table-card__link">
-                                <a href="/dataedit/view/{{ table.schema }}/{{ table.name }}">{% if table.table_label %} {{ table.table_label }} {% else %} {{ table.name }} {% endif %}</a>
+                                <a href="/dataedit/view/{{ table.schema }}/{{ table.name }}">{% if table.oemetadata %}{{ table.oemetadata.title }}<br /><small class="text-muted">{{ table.oemetadata.name }}</small>{% else %}Tabelle &raquo;{{ table.name }}&laquo; {% endif %}</a>
                             </div>
                         </div>
 

@@ -74,6 +74,7 @@ class TablesView(View):
 
             # Use attributes in the templates
             table_data = {
+                "oemetadata": table.oemetadata,
                 "name": table.name,
                 "schema": table.schema.name,
                 "table_label": table.human_readable_name,
