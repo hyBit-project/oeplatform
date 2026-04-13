@@ -3,6 +3,15 @@ This instance has a few update from the original open energy platform.
 
 For the correct build, please update the base/settings_hybit.py (or ensure the build environment has an env var HYBIT_CONFIG with the necessary content).
 
+To use the docker image provided by the GitLab Registry, before starting the instance, ensure to login. The best is to use a specific access token with level Developer the right "read_registry".
+
+```sh
+# Login
+docker login gitlab.res.uni-bremen.de:5050
+
+# Start the oeplatform
+docker compose -f ./docker/docker-compose.yaml up 
+```
 # Original README
 
 | Workflow        | Status-Badge & Link                                                                                                                                                                                                  |
