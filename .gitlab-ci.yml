@@ -1,0 +1,25 @@
+stages:
+  - build
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'master'
+
+variables:
+  #CONTAINER_IMAGE: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  CONTAINER_IMAGE: "$CI_REGISTRY_IMAGE:latest"
+
+build-job:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind-rootless
+
+  stage: build
+  script:
+    - echo $CONTAINER_IMAGE
+    - echo $HYBIT_CONFIG > base/settings_hybit.py
+    - docker build -t $CONTAINER_IMAGE -f docker/Dockerfile .
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker push $CONTAINER_IMAGE

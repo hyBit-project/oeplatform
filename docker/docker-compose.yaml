@@ -1,7 +1,7 @@
 
 services:
   oeplatform:
-    image: "ghcr.io/openenergyplatform/oeplatform:latest"
+    image: "gitlab.res.uni-bremen.de:5050/hybit/oeplatform:latest"
     stdin_open: true
     tty: true
     ports:
