@@ -87,8 +87,6 @@ var MetaEdit = function(config) {
     json.properties.resources.items.properties.profile.options = {hidden: true};
     json.properties.resources.items.properties.encoding.options = {hidden: true};
     json.properties.resources.items.properties.dialect.options = {hidden: true};
-    json.properties.review.options = {hidden: true};
-    json.properties.metaMetadata.options = {hidden: true};
 
     // add formats
     json.properties.publicationDate.format = 'date';
@@ -136,32 +134,42 @@ var MetaEdit = function(config) {
     // add empty value for all missing so they show up in editor
     // these will be removed at the end
     function fixRecursive(schemaProps, elemObject, path) {
-      // is object ?
-      if (typeof elemObject != 'object' || $.isArray(elemObject)) {
-        return;
-      }
-      // for each key: fill missing (recursively)
-      Object.keys(schemaProps).map(function(key) {
-        var prop = schemaProps[key];
-        // console.log(path + '.' + key, prop.type)
-        if (prop.type == 'object') {
-          elemObject[key] = elemObject[key] || {};
-          fixRecursive(prop.properties, elemObject[key], path + '.' + key);
-        } else if (prop.type == 'array') {
-          elemObject[key] = elemObject[key] || [];
-          // if non empty array
-          if ($.isArray(elemObject[key]) && elemObject[key].length > 0) {
-            elemObject[key].map(function(elem, i) {
-              fixRecursive(prop.items.properties, elem, path + '.' + key + '.' + i);
-            });
-          }
-        } else { // value
-          if (elemObject[key] === undefined) {
-            // console.log('adding empty value: ' + path + '.' + key)
-            elemObject[key] = null;
-          }
+      try {
+        // is object ?
+        if (typeof elemObject != 'object' || $.isArray(elemObject)) {
+          return;
         }
-      });
+
+        // for each key: fill missing (recursively)
+        Object.keys(schemaProps).map(function(key) {
+          var prop = schemaProps[key];
+          // console.log(path + '.' + key, prop.type)
+          if (prop.type == 'object') {
+            elemObject[key] = elemObject[key] || {};
+            fixRecursive(prop.properties, elemObject[key], path + '.' + key);
+          } else if (prop.type == 'array') {
+            elemObject[key] = elemObject[key] || [];
+            // if non empty array
+            if ($.isArray(elemObject[key]) && elemObject[key].length > 0) {
+              elemObject[key].map(function(elem, i) {
+                fixRecursive(prop.items.properties, elem, path + '.' + key + '.' + i);
+              });
+            }
+          } else { // value
+            if (elemObject[key] === undefined) {
+              // console.log('adding empty value: ' + path + '.' + key)
+              elemObject[key] = null;
+            }
+          }
+        });
+      } catch (error) {
+        console.log("------\nGot an error on fixing the metadata recursively in path", path);
+        console.log("elemObject", elemObject);
+        console.log("schemaProps", schemaProps);
+        console.log(error);
+        console.log("------");
+      }
+
     }
 
     fixRecursive(config.schema.properties, json, 'root');
