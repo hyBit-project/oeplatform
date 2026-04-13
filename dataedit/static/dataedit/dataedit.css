@@ -45,10 +45,16 @@ select option:checked {
   color: green;
 }
 
+input[type=checkbox] {
+  border: 3px solid #fff;
+}
+
 input[type="checkbox"]:checked + label {
   font-weight: bold;
-  border: 3px solid;
+  border-color: #000;
 }
+
+
 
 .editor_frame {
   position: fixed;
@@ -259,8 +265,8 @@ input[type="checkbox"]:checked + label {
   align-items: center;
 
   grid-template-areas:
-    "Title Caret"
-    "Content Content";
+  "Title Caret"
+  "Content Content";
 }
 
 .foldable-entry > h5 {

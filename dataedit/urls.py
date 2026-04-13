@@ -99,6 +99,11 @@ urlpatterns = [
         name="wizard_create",
     ),
     url(
+        r"^wizard/hyBit-editor/$",
+        views.WizardViewHyBit.as_view(),
+        name="wizard_hybit",
+    ),
+    url(
         r"^oemetabuilder/$",
         views.StandaloneMetaEditView.as_view(),
         name="oemetabuilder",

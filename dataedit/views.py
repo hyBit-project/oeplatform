@@ -1757,6 +1757,11 @@ def get_column_description(schema, table):
     return columns
 
 
+class WizardViewHyBit(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "dataedit/wizard_hybit.html")
+
+
 class WizardView(LoginRequiredMixin, View):
     """View for the upload wizard (create tables, upload csv)."""
 

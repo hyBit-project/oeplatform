@@ -1,0 +1,370 @@
+{% extends "dataedit/base.html" %} 
+{% load static %} 
+{% load django_bootstrap5 %} 
+
+{% block after-head %}
+    <link href="/static/wizard/wizard.css" rel="stylesheet"> 
+{% endblock after-head %} 
+
+{% block site-header %}
+    <h2 class="site-header"><span class="spinner-border text-primary" id="wizard-loading"></span>
+        <i class="fa fa-table mr-2"></i>Table Upload</span>
+    </h2>
+{% endblock site-header %} 
+
+{% block main %}
+    <div class="main-header">
+        <h1 class="main-header__title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 416L168.6 180.7c15.3-34.4 40.3-63.5 72-83.7l146.9-94c3-1.9 6.5-2.9 10-2.9C407.7 0 416 8.3 416 18.6l0 1.6c0 2.6-.5 5.1-1.4 7.5L354.8 176.9c-1.9 4.7-2.8 9.7-2.8 14.7c0 5.5 1.2 11 3.4 16.1L448 416l-207.1 0 11.8-35.4 40.4-13.5c6.5-2.2 10.9-8.3 10.9-15.2s-4.4-13-10.9-15.2l-40.4-13.5-13.5-40.4C237 276.4 230.9 272 224 272s-13 4.4-15.2 10.9l-13.5 40.4-40.4 13.5C148.4 339 144 345.1 144 352s4.4 13 10.9 15.2l40.4 13.5L207.1 416 64 416zM279.6 141.5c-1.1-3.3-4.1-5.5-7.6-5.5s-6.5 2.2-7.6 5.5l-6.7 20.2-20.2 6.7c-3.3 1.1-5.5 4.1-5.5 7.6s2.2 6.5 5.5 7.6l20.2 6.7 6.7 20.2c1.1 3.3 4.1 5.5 7.6 5.5s6.5-2.2 7.6-5.5l6.7-20.2 20.2-6.7c3.3-1.1 5.5-4.1 5.5-7.6s-2.2-6.5-5.5-7.6l-20.2-6.7-6.7-20.2zM32 448l448 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 512c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg> hyBit Table Creation Wizard
+        </h1>
+        <div class="main-header__wizard">
+        <!-- Indicate weather the user got permissions fot this table -->
+        </div>
+        <br>
+        <p>
+            Hier kannst du basierend auf einer CSV-Datei die Datenbankstruktur anlegen lassen.<br />
+            Das Tool rät dabei automatisch anhand des ersten Datensatzes die möglichen Dateiformate.<br />
+            Danach geht's dann im "normalen" Wizard weiter, wo die CSV-Datei (leider noch) erneut hochgeladen werden muss.
+        </p>
+        <p>
+            Es wird automatisch zusätzlich eine ID-Spalte mit primary key angelegt (OEP Konvention).<br />
+            Sofern der Datensatz ebenfalls eine entsprechende Spalte hat, wird die Spalte automatisch zugeordnet.
+            Ansonsten bleibt die ID-Spalte erstmal ohne Daten.
+        </p>
+    <p>Alternativ gibt es <a href="/dataedit/wizard/">hier</a> den Standard-OEP-Editor.</p>
+    </div>
+    <!-- inside bootstrap column -->
+    <div id="wizard-container" class="container-fluid px-4">
+
+        <div class="row mb-2">
+            <div class="col-2">CSV-Datei</div>
+            <div class="col-4"><input accept="text/csv" class="form-control" id="file" name="file" type="file"></div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-2">Encoding</div>
+            <div class="col-4"><select class="form-select" id="encoding" name="encoding"><option value="utf-8">UTF-8</option><option value="latin1">ISO-8859-1 / latin-1</option><option value="ascii">ASCII</option></select></div>
+        </div>
+
+        <div class="row">
+            <div class="col-2">Trennzeichen</div>
+            <div class="col-4"><input class="form-control" id="seperator" maxlength="1" name="seperator" type="text" value=","></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr/>
+            </div>
+
+            <div class="col-12 mt-5">
+                <h2>Erste drei Zeilen der Datei</h2>
+                <div id="firstLine" class="border p-3" style="line-break: anywhere"></div>
+            </div>
+
+        </div>
+        <form method="post" action="#" id="tableForm">
+        <div class="row mt-5">
+            <div class="col-2">Tabellenname</div>
+            <div class="col-4">
+                <div class="form-group">
+                    <input type="text" id="table_name" name="table_name" class="form-control"/>
+                    <small class="text-muted">Valid table name (only lower case letters, numbers and underscore, max. 50 chars)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-5">
+                <h2>Spalten in der CSV-Datei</h2>
+                Dokumentation zu Datentypen:
+                <a href="https://www.postgresql.org/docs/current/datatype-numeric.html">Zahlen</a>,
+                <a href="https://www.postgresql.org/docs/current/datatype-datetime.html">Datum & Zeit</a>,
+                <a href="https://www.postgresql.org/docs/current/datatype-character.html">Text</a>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Spalte in CSV</th>
+                        <th>Datenbank-Spalte</th>
+                        <th>Beispiel</th>
+                        <th>Datentyp</th>
+                        <th>Datentyp</th>
+                        <th>Nullable</th>
+                        <th>Löschen</th>
+                        <!--<th title="primary key">PK</th>-->
+                    </tr>
+                    </thead>
+                    <tbody id="outputTable">
+
+                    </tbody>
+                </table>
+                <input type="hidden" name="total_rows" id="total_rows" value="-1" />
+                <button class="btn btn-success" type="submit" id="submitTable">Tabelle erstellen in OEP</button>
+            </div>
+        </div>
+        </form>
+
+        <div class="mt-3" id="result">
+
+        </div>
+    </div>
+
+
+<!-- id="wizard-container" class="container-fluid" -->
+{% endblock main %} {% block after-body-bottom-js %}
+
+
+<script src="/static/wizard-hybit/csv.js"></script>
+
+    <script>
+        let seperator_field = document.getElementById('seperator');
+        let encoding_field = document.getElementById('encoding');
+        let file_field = document.getElementById('file');
+
+        file_field.addEventListener('change', read_csv);
+        seperator_field.addEventListener('keyup', read_csv);
+        encoding_field.addEventListener('keyup', read_csv);
+
+        const resultDiv = document.getElementById('result');
+
+        function read_csv() {
+
+            resultDiv.innerHTML = '';
+
+            if (seperator_field.value.length !== 1 || file_field.files[0] === undefined)
+                return;
+
+            let fr = new FileReader();
+            fr.onload = function (e) {
+                const text = e.target.result;
+                const rows = text.split('\n');
+                const line1 = rows[0];
+                let line2 = '';
+                let line3 = '';
+                if (rows.length > 1)
+                    line2 = rows[1];
+                    line3 = rows[2];
+
+                document.getElementById('firstLine').innerHTML = line1 + '<hr />' + line2 + '<hr />' + line3;
+                data = parse(line1 + '\n' + line2, { separator: seperator_field.value });
+                put_data_to_table(data);
+            };
+
+            const file = file_field.files[0];
+            // read only first 32k characters of file to have an identical runtime; hopefully this is enough for all csv files
+            // if not: increase this number
+            let blob = file.slice(0, 32768);
+            fr.readAsText(blob, encoding_field.value);
+
+            document.getElementById('table_name').value = processString(file.name);
+        }
+
+        function processString(input) {
+            return input
+                .toLowerCase()
+                .replace(/\.csv$/, '')
+                .replace(/\s+/g, '_')
+                .replace(/-/g, '_')
+                .replace(/\./g, '_')
+                .replace(/[^\x00-\x7F]/g, (char) => {
+                    const replacements = {'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss',};
+                    return replacements[char] || '';
+                })
+                .substring(0, 50);
+        }
+
+        document.getElementById('tableForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            let tableName = formData.get('table_name');
+            let totalRows = formData.get('total_rows');
+
+            let primary_row = null;
+            if (formData.has('primary')) {
+                primary_row = formData.get('primary');
+            }
+
+            let columns = [];
+
+            for (let i = 0; i < totalRows; i++) {
+                let fieldName = formData.get('field_name' + i).trim();
+
+                if (fieldName.length === 0) {
+                    continue;
+                }
+
+                let fieldType = formData.get('type' + i);
+                let nullable = formData.has('nullable' + i);
+
+                let rowDict = {'name': fieldName, 'data_type': fieldType, 'is_nullable': nullable };
+                columns.push(rowDict);
+            }
+
+            let schema = 'model_draft'
+            let api_url = "/api/v0/schema/" + schema + "/tables/" + tableName + '/';
+
+            //cli.create_table(table_name, payload)
+
+            fetch(api_url, {
+                method: 'PUT',
+                headers: {
+                    "X-CSRFToken": getCookie('csrftoken'),
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify({query: {"columns": columns}})
+            })
+                .then(response => {
+                    if (response.status === 201) {
+                        return {'created': true};
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.created) {
+                        let next_url = '/dataedit/wizard/model_draft/' + tableName + '#wizard-container-upload'
+                        resultDiv.innerHTML = '<div class="alert alert-success">Die Tabelle wurde erfolgreich angelegt.<br /><a href="' + next_url + '" class="btn btn-success mt-1" target="oep">Jetzt Daten hochladen</a></div>';
+                        return;
+                    } else {
+                        resultDiv.innerHTML = '<div class="alert alert-danger">Fehler: ' + data.reason + '</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler beim Abrufen:', error);
+                    document.getElementById('result').innerHTML = '<div class="alert alert-danger">Fehler beim Erstellen der Tabelle: ' + error + '</div>';
+                });
+        });
+
+
+        // from wizard.js
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = $.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function put_data_to_table(data) {
+            const table = document.getElementById('outputTable');
+            table.innerHTML = '<tr id="rowID"><td></td><td>ID</td><td></td><td>bigint</td><td>bigint</td><td></td><td>-</td></tr>'; // Tabelle zurücksetzen
+            let i = 0;
+            let dataIdx = 0;
+
+            data[0].forEach(cell => {
+                if (cell.toLowerCase() === 'id') {
+                    let row = document.getElementById('rowID');
+                    row.cells[0].textContent = cell;
+
+                    if (data.length === 2 && data[1].length > dataIdx) {
+                        row.cells[2].textContent = data[1][dataIdx];
+                    }
+                    ++dataIdx;
+                    return;
+                }
+
+                const newRow = table.insertRow();
+                newRow.id = 'row' + i;
+                const cell1 = newRow.insertCell();
+                let cell_content = cell.trim();
+                cell1.textContent = cell_content;
+
+                let col_name = processString(cell_content);
+                const cell2 = newRow.insertCell();
+                cell2.innerHTML = '<input class="form-control" name="field_name' + i + '" type="text" value="' + col_name + '" />';
+
+                const cell2a = newRow.insertCell();
+                cell2a.classList.add('text-muted', 'overflow-hidden');
+                cell2a.style.width = '50px;'
+
+                let row_type = 'text';
+                if (data.length === 2 && data[1].length > dataIdx) {
+                    demo_value = data[1][dataIdx];
+                    cell2a.innerText = demo_value;
+
+                    // try to suggest type
+                    if (demo_value.toLowerCase() === 'true' || demo_value.toLowerCase() === 'false') {
+                        row_type = 'boolean';
+                    } else if (/^\d+(\.|\,)\d+$/.test(demo_value)) {
+                        row_type = 'real';
+                    } else if (!isNaN(demo_value) && !isNaN(parseFloat(demo_value))) {
+                        row_type = 'integer';
+                    }
+
+                    // TODO: Datum, Uhrzeit, DateTime - Was sind da Standard-CSV Formate?
+                }
+
+                const cell3 = newRow.insertCell();
+                cell3.innerHTML = '<select class="form-select" id="typeSel' + i + '" onchange="insertType(' + i + ')" value="' + row_type + '">\n' +
+                    '<optgroup label="Booleans">\n' +
+                    '    <option value="boolean" ' + is_selected(row_type, 'boolean') + '>Wahrheitswert (Boolean)</option>\n' +
+                    '</optgroup><optgroup label="Ganzzahl">\n' +
+                    '    <option value="integer" ' + is_selected(row_type, 'integer') + '>Ganzzahl (integer, [-2147483648, +2147483647])</option>\n' +
+                    '    <option value="smallint">Ganzzahl (smallint, [-32768, +32767])</option>\n' +
+                    '    <option value="bigint">Ganzzahl (bigint, [-9.2e18, , +9.2e18])</option></optgropup>\n' +
+                    ' <optgroup label="Kommzahl">' +
+                    '    <option value="float">Kommazahl (float)</option>\n' +
+                    '    <option value="real" ' + is_selected(row_type, 'real') + '>Kommazahl (real, 6 decimal digits precision)</option>\n' +
+                    '   <option value="decimal(9, 6)">Kommzahl mit gegebener Präzision</option>' +
+                    ' </optgroup><optgroup label="Datum / Uhrzeit">' +
+                    '   <option value="date">Datum (date)</option>\n' +
+                    '    <option value="time">Uhrzeit (time)</option>\n' +
+                    '    <option value="datetime">Datum mit Uhrzeit (datetime)</option>\n' +
+                    '</optgroup><optgroup label="Text / Strings">\n' +
+                    '    <option value="char(5)">String, fixe Länge, 5 Zeichen</option>\n' +
+                    '    <option value="varchar(128)">String, variable, max. 128 Zeichen</option>\n' +
+                    '    <option value="text" ' + is_selected(row_type, 'text') + '>String, beliebige Länge</option></optgroup>\n' +
+                    '</select>';
+
+                const cell4 = newRow.insertCell();
+                cell4.innerHTML = '<input type="text" class="form-control" id="type' + i + '" name="type' + i + '" />';
+                insertType(i);
+
+                const cell5 = newRow.insertCell();
+                cell5.innerHTML = '<input type="checkbox" name="nullable' + i + '" value="1" />';
+                const cell6 = newRow.insertCell();
+                cell6.innerHTML = '<button class="btn btn-sm btn-danger" title="Löschen" onclick="deleteRow(' + i + ')">x</button>';
+
+                // so far this column always needs to be id; therefore no need to have a check like that,
+                /*const cell6 = newRow.insertCell();
+                let radio_box = '<input type="radio" name="primary" value="' + i + '"';
+                if (i === 0)
+                    radio_box += 'checked="checked"';
+                radio_box += ' />';
+
+                cell6.innerHTML = radio_box;*/
+                ++i;
+                ++dataIdx;
+            });
+            document.getElementById('total_rows').value = i;
+        }
+
+        function deleteRow(id) {
+            let row = document.getElementById('row' + id);
+            row.parentNode.removeChild(row);
+        }
+        function is_selected(rowType, type) {
+            if (rowType === type) {
+                return 'selected="selected"'
+            }
+            return '';
+        }
+
+        function insertType(rowNo) {
+            document.getElementById('type' + rowNo).value = document.getElementById('typeSel' + rowNo).value;
+        }
+
+        read_csv();
+    </script>
+
+{% endblock after-body-bottom-js %}
