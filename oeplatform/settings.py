@@ -210,9 +210,12 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
     "axes.backends.AxesBackend",
-    # custom class extenging Django ModelBackend for login with username OR email
-    "login.backends.ModelBackendWithEmail",
+    # custom class extending Django ModelBackend for login with username OR email
+    "login.backends.ModelBackendWithLDAP"
 ]
+
+# For hyBit-Instance: disable axes
+AXES_ENABLED = False
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

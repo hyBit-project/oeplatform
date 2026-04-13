@@ -5,3 +5,6 @@ HOME_HYBIT_LINKS = [
 HOME_HYBIT_CONTACTS = [
     {'name': 'A Contact', 'mail': 'a.contact@someprovider.hybit', 'suffix': ''},
 ]
+
+LDAP_BASE_DN = '...,DC=de'
+LDAP_SERVER = 'ldap://1.2.3.4'
