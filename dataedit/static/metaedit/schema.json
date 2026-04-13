@@ -7,19 +7,19 @@
   "format": "categories",
   "basicCategoryTitle": "General",
   "properties": {
-    "name": {
-      "description": "File name or database table name",
-      "example": "oep_metadata_table_example_v160",
-      "type": ["string", "null"],
-      "badge": "Silver",
-      "title": "Name"
-    },
     "title": {
       "description": "A Human readable, full title , including author.",
       "example": "RLI - OEMetadata - Metadata example table",
       "type": ["string", "null"],
       "badge": "Silver",
       "title": "Title"
+    },
+    "name": {
+      "description": "File name or database table name (in hyBit: steep_Name_Quelle_Datum)",
+      "example": "oep_metadata_table_example_v160",
+      "type": ["string", "null"],
+      "badge": "Silver",
+      "title": "Name"
     },
     "id": {
       "description": "Uniform Resource Identifier (URI) that unambiguously identifies the resource. This can be a URL on the data set. It can also be a Digital Object Identifier (DOI).",
@@ -85,42 +85,6 @@
       "badge": "Platinum",
       "title": "Subject"
     },
-    "language": {
-      "description": "List of languages used within the described data structures (e.g. titles, descriptions). Standard: IETF (BCP47).",
-      "example": "[en-GB, de-DE, fr-FR]",
-      "type": "array",
-      "items": {
-        "description": "Language used within the described data structures (e.g. titles, descriptions). The language key can be repeated if more languages are used. Standard: IETF (BCP47)",
-        "example": "en-GB",
-        "type": ["string", "null"],
-        "badge": "Gold",
-        "title": "Language"
-      },
-      "badge": "Gold",
-      "title": "Language"
-    },
-    "keywords": {
-      "description": "A list of string keywords to assist users searching for the package in catalogs.",
-      "example": "[example, template, test]",
-      "type": "array",
-      "items": {
-        "description": "A keyword to assist users searching for the package in catalogs.",
-        "example": "template",
-        "type": ["string", "null"],
-        "badge": "Silver",
-        "title": "Keyword"
-      },
-      "badge": "Silver",
-      "title": "Keywords"
-    },
-    "publicationDate": {
-      "description": "Date of publishing. Date Format is ISO 8601 (YYYY-MM-DD)",
-      "example": "2019-02-06",
-      "type": ["string", "null"],
-      "badge": "Bronze",
-      "title": "Publication date",
-      "format": "date"
-    },
     "context": {
       "description": "An Object that describes the general setting, evironment or project leading to the creation or maintenance of this dataset. In science this can be the research project.",
       "type": "object",
@@ -132,20 +96,6 @@
           "badge": "Gold",
           "title": "Homepage",
           "format": "uri"
-        },
-        "documentation": {
-          "description": "A URL of the project's documentation.",
-          "example": "https://openenergy-platform.org/about/",
-          "type": ["string", "null"],
-          "badge": "Gold",
-          "title": "Documentation"
-        },
-        "sourceCode": {
-          "description": "A URL of the projects source code.",
-          "example": "https://github.com/OpenEnergyPlatform",
-          "type": ["string", "null"],
-          "badge": "Gold",
-          "title": "Source Code"
         },
         "contact": {
           "description": "A reference to the creator or maintainer of the data set. This can be an email address or a GitHub handle.",
@@ -169,26 +119,46 @@
           "badge": "Gold",
           "title": "Funding agency"
         },
-        "fundingAgencyLogo": {
-          "description": "A URL to the logo or image of the funding agency.",
-          "example": "https://commons.wikimedia.org/wiki/File:BMWi_Logo_2021.svg#/media/File:BMWi_Logo_2021.svg",
+        "documentation": {
+          "description": "A URL of the project's documentation.",
+          "example": "https://openenergy-platform.org/about/",
           "type": ["string", "null"],
           "badge": "Gold",
-          "title": "Funding agency logo",
-          "format": "uri"
+          "title": "Documentation"
         },
-        "publisherLogo": {
-          "description": "A URL to the logo of the agency publishing the data.",
-          "example": "https://reiner-lemoine-institut.de//wp-content/uploads/2015/09/rlilogo.png",
+        "sourceCode": {
+          "description": "A URL of the projects source code.",
+          "example": "https://github.com/OpenEnergyPlatform",
           "type": ["string", "null"],
           "badge": "Gold",
-          "title": "Publisher logo",
-          "format": "uri"
+          "title": "Source Code"
         }
       },
       "badge": "Gold",
       "title": "Context",
       "additionalProperties": false
+    },
+    "keywords": {
+      "description": "A list of string keywords to assist users searching for the package in catalogs.",
+      "example": "[example, template, test]",
+      "type": "array",
+      "items": {
+        "description": "A keyword to assist users searching for the package in catalogs.",
+        "example": "template",
+        "type": ["string", "null"],
+        "badge": "Silver",
+        "title": "Keyword"
+      },
+      "badge": "Silver",
+      "title": "Keywords"
+    },
+    "publicationDate": {
+      "description": "Date of publishing",
+      "example": "2019-02-06",
+      "type": ["string", "null"],
+      "badge": "Bronze",
+      "title": "Publication date",
+      "format": "date"
     },
     "spatial": {
       "description": "An object that describes the spatial context of the data it contains.",
@@ -199,14 +169,14 @@
           "example": "52.433509, 13.535855",
           "type": ["string", "null"],
           "badge": "Silver",
-          "title": "Location"
+          "title": "Location (reference coordinates)"
         },
         "extent": {
           "description": "A covered area. May be the name of a region, or the geometry of a bounding box.",
           "example": "Europe",
           "type": ["string", "null"],
           "badge": "Silver",
-          "title": "Extent"
+          "title": "Spatial Scope (administrative level)"
         },
         "resolution": {
           "description": "Pixel size in case of a regular raster image. Reference to administrative level or other spatial division that is present as the smallest spatially distinguished unit size.",
@@ -287,194 +257,6 @@
       "badge": "Silver",
       "title": "Temporal",
       "additionalProperties": false
-    },
-    "sources": {
-      "description": "List of source objects. Each object has all name-value-pairs.",
-      "type": "array",
-      "items": {
-        "description": "Source object in list of source objects. Each object has all name-value-pairs.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "A human readable title of the source, a document title or organisation name.",
-            "example": "IPCC Fifth Assessment Report",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Title"
-          },
-          "description": {
-            "description": "A free text description of the data set.",
-            "example": "Scientific climate change report by the UN",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Description"
-          },
-          "path": {
-            "description": "A URL to the original source.",
-            "example": "https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_full.pdf",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Path",
-            "format": "uri"
-          },
-          "licenses": {
-            "description": "The license(s) under which the source(s) is/are provided. List of objects.",
-            "type": "array",
-            "items": {
-              "description": "A license object under which the described source is provided. Each object has all name-value-pairs.",
-              "type": "object",
-              "properties": {
-                "name": {
-                  "description": "THe SPDX identifier.",
-                  "example": "ODbL-1.0",
-                  "type": ["string", "null"],
-                  "badge": "Bronze",
-                  "title": "Name"
-                },
-                "title": {
-                  "description": "The official (human readable) title of the license.",
-                  "example": "Open Data Commons Open Database License 1.0",
-                  "type": ["string", "null"],
-                  "badge": "Bronze",
-                  "title": "Title"
-                },
-                "path": {
-                  "description": "A link to the license text.",
-                  "example": "https://opendatacommons.org/licenses/odbl/1-0/index.html",
-                  "type": ["string", "null"],
-                  "badge": "Bronze",
-                  "title": "Path"
-                },
-                "instruction": {
-                  "description": "A short description of rights and restrictions. The use of tl;drLegal is recommended.",
-                  "example": "You are free to share and change, but you must attribute, and share derivations under the same license. See https://tldrlegal.com/license/odc-open-database-license-(odbl) for further information.",
-                  "type": ["string", "null"],
-                  "badge": "Bronze",
-                  "title": "Instruction"
-                },
-                "attribution": {
-                  "description": "The copyright owner of the source. Copyright owner name must be acknowledged if attribution licenses are used.",
-                  "example": "© Intergovernmental Panel on Climate Change 2014",
-                  "type": ["string", "null"],
-                  "badge": "Bronze",
-                  "title": "Attribution"
-                }
-              },
-              "badge": "Bronze",
-              "title": "Licenses"
-            },
-            "badge": "Bronze",
-            "title": "Licenses"
-          }
-        },
-        "badge": "Bronze",
-        "title": "Sources",
-        "additionalProperties": false
-      },
-      "badge": "Bronze",
-      "title": "Sources"
-    },
-    "licenses": {
-      "description": "The license(s) under which the described package is provided. List of objects.",
-      "type": "array",
-      "items": {
-        "description": "A license object under which the described package is provided. Each object has all name-value-pairs.",
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The SPDX identifier.",
-            "example": "ODbL-1.0",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Name"
-          },
-          "title": {
-            "description": "The official (human readable) title of the license.",
-            "example": "Open Data Commons Open Database License 1.0",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Title"
-          },
-          "path": {
-            "description": "A url-or-path string, that is a fully qualified HTTP address, or a relative POSIX path (see the url-or-path definition in Data Resource for details).",
-            "example": "https://opendatacommons.org/licenses/odbl/1-0/index.html",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Path"
-          },
-          "instruction": {
-            "description": "A short description of rights and restrictions. The use of tl;drLegal is recommended.",
-            "example": "You are free to share and change, but you must attribute, and share derivations under the same license. See https://tldrlegal.com/license/odc-open-database-license-(odbl) for further information.",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Instruction"
-          },
-          "attribution": {
-            "description": "The copyrightholder of the data set. If attribution licenses are used, that name must be acknowledged.",
-            "example": "© Reiner Lemoine Institut",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Attribution"
-          }
-        },
-        "badge": "Bronze",
-        "title": "Licenses",
-        "additionalProperties": false
-      },
-      "badge": "Bronze",
-      "title": "Licenses"
-    },
-    "contributors": {
-      "description": "The people or organizations who contributed to this data package. List of objects.",
-      "type": "array",
-      "items": {
-        "description": "A person or organizations who contributed to this data package. Each object refers to one contributor. Every contributor must have a title and property. A path, email, role and organization properties are optional extras.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "Name/title of the contributor (name for a person, name or title for an organization).",
-            "example": "John Doe",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Title"
-          },
-          "email": {
-            "description": "E-mail address of the contributor.",
-            "example": "contact@example.com",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Email",
-            "format": "email"
-          },
-          "date": {
-            "description": "Date of the contribution. If the contribution took more than a day, use the date of the final contribiution. Date Format is ISO 8601.",
-            "example": "2016-06-16",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Date",
-            "format": "date"
-          },
-          "object": {
-            "description": "Target of contribution. Which part of the package was supplied/changed.",
-            "example": "data and metadata",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Object"
-          },
-          "comment": {
-            "description": "Free text comment on what has been done.",
-            "example": "Fix typo in the title.",
-            "type": ["string", "null"],
-            "badge": "Bronze",
-            "title": "Comment"
-          }
-        },
-        "badge": "Bronze",
-        "title": "Contributors",
-        "additionalProperties": false
-      },
-      "badge": "Bronze",
-      "title": "Contributors"
     },
     "resources": {
       "description": "Resources, described as a list of data resource format objects.",
@@ -789,92 +571,214 @@
       },
       "title": "Resource"
     },
+    "contributors": {
+      "description": "The people or organizations who contributed to this data package. List of objects.",
+      "type": "array",
+      "items": {
+        "description": "A person or organizations who contributed to this data package. Each object refers to one contributor. Every contributor must have a title and property. A path, email, role and organization properties are optional extras.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Name/title of the contributor (name for a person, name or title for an organization).",
+            "example": "John Doe",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Title"
+          },
+          "email": {
+            "description": "E-mail address of the contributor.",
+            "example": "contact@example.com",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Email",
+            "format": "email"
+          },
+          "date": {
+            "description": "Date of the contribution. If the contribution took more than a day, use the date of the final contribiution. Date Format is ISO 8601.",
+            "example": "2016-06-16",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Date",
+            "format": "date"
+          },
+          "object": {
+            "description": "Target of contribution. Which part of the package was supplied/changed.",
+            "example": "data and metadata",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Object"
+          },
+          "comment": {
+            "description": "Free text comment on what has been done.",
+            "example": "Fix typo in the title.",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Comment"
+          }
+        },
+        "badge": "Bronze",
+        "title": "Contributors",
+        "additionalProperties": false
+      },
+      "badge": "Bronze",
+      "title": "Contributors"
+    },
+    "sources": {
+      "description": "List of source objects. Each object has all name-value-pairs.",
+      "type": "array",
+      "items": {
+        "description": "Source object in list of source objects. Each object has all name-value-pairs.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "A human readable title of the source, a document title or organisation name.",
+            "example": "IPCC Fifth Assessment Report",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Title"
+          },
+          "description": {
+            "description": "A free text description of the data set.",
+            "example": "Scientific climate change report by the UN",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Description"
+          },
+          "path": {
+            "description": "A URL to the original source.",
+            "example": "https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_full.pdf",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Path",
+            "format": "uri"
+          },
+          "licenses": {
+            "description": "The license(s) under which the source(s) is/are provided. List of objects.",
+            "type": "array",
+            "items": {
+              "description": "A license object under which the described source is provided. Each object has all name-value-pairs.",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "THe SPDX identifier.",
+                  "example": "ODbL-1.0",
+                  "type": ["string", "null"],
+                  "badge": "Bronze",
+                  "title": "Name"
+                },
+                "title": {
+                  "description": "The official (human readable) title of the license.",
+                  "example": "Open Data Commons Open Database License 1.0",
+                  "type": ["string", "null"],
+                  "badge": "Bronze",
+                  "title": "Title"
+                },
+                "path": {
+                  "description": "A link to the license text.",
+                  "example": "https://opendatacommons.org/licenses/odbl/1-0/index.html",
+                  "type": ["string", "null"],
+                  "badge": "Bronze",
+                  "title": "Path"
+                },
+                "instruction": {
+                  "description": "A short description of rights and restrictions. The use of tl;drLegal is recommended.",
+                  "example": "You are free to share and change, but you must attribute, and share derivations under the same license. See https://tldrlegal.com/license/odc-open-database-license-(odbl) for further information.",
+                  "type": ["string", "null"],
+                  "badge": "Bronze",
+                  "title": "Instruction"
+                },
+                "attribution": {
+                  "description": "The copyright owner of the source. Copyright owner name must be acknowledged if attribution licenses are used.",
+                  "example": "© Intergovernmental Panel on Climate Change 2014",
+                  "type": ["string", "null"],
+                  "badge": "Bronze",
+                  "title": "Attribution"
+                }
+              },
+              "badge": "Bronze",
+              "title": "Licenses"
+            },
+            "badge": "Bronze",
+            "title": "Licenses"
+          }
+        },
+        "badge": "Bronze",
+        "title": "Sources",
+        "additionalProperties": false
+      },
+      "badge": "Bronze",
+      "title": "Sources"
+    },
+    "licenses": {
+      "description": "The license(s) under which the described package is provided. List of objects.",
+      "type": "array",
+      "items": {
+        "description": "A license object under which the described package is provided. Each object has all name-value-pairs.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The SPDX identifier.",
+            "example": "ODbL-1.0",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Name"
+          },
+          "title": {
+            "description": "The official (human readable) title of the license.",
+            "example": "Open Data Commons Open Database License 1.0",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Title"
+          },
+          "path": {
+            "description": "A url-or-path string, that is a fully qualified HTTP address, or a relative POSIX path (see the url-or-path definition in Data Resource for details).",
+            "example": "https://opendatacommons.org/licenses/odbl/1-0/index.html",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Path"
+          },
+          "instruction": {
+            "description": "A short description of rights and restrictions. The use of tl;drLegal is recommended.",
+            "example": "You are free to share and change, but you must attribute, and share derivations under the same license. See https://tldrlegal.com/license/odc-open-database-license-(odbl) for further information.",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Instruction"
+          },
+          "attribution": {
+            "description": "The copyrightholder of the data set. If attribution licenses are used, that name must be acknowledged.",
+            "example": "© Reiner Lemoine Institut",
+            "type": ["string", "null"],
+            "badge": "Bronze",
+            "title": "Attribution"
+          }
+        },
+        "badge": "Bronze",
+        "title": "Licenses",
+        "additionalProperties": false
+      },
+      "badge": "Bronze",
+      "title": "Licenses"
+    },
+    "language": {
+      "description": "List of languages used within the described data structures (e.g. titles, descriptions). Standard: IETF (BCP47).",
+      "example": "[en-GB, de-DE, fr-FR]",
+      "type": "array",
+      "items": {
+        "description": "Language used within the described data structures (e.g. titles, descriptions). The language key can be repeated if more languages are used. Standard: IETF (BCP47)",
+        "example": "en-GB",
+        "type": ["string", "null"],
+        "badge": "Gold",
+        "title": "Language"
+      },
+      "badge": "Gold",
+      "title": "Language"
+    },
     "@context": {
       "description": "Explanation of metadata keys in ontology terms.",
       "example": "https://raw.githubusercontent.com/LOD-GEOSS/databus-snippets/master/oep_metadata/context.jsonld",
       "type": ["string", "null"],
       "badge": null,
       "title": "@context"
-    },
-    "@id": {
-      "description": "A Uniform Resource Identifier (URI) that links the resource via the DBpedia Databus",
-      "example": "https://databus.dbpedia.org/kurzum/mastr/bnetza-mastr/01.04.00",
-      "type": ["string", "null"],
-      "badge": null,
-      "title": "@Id"
-    },
-    "review": {
-      "description": "Data uploaded through the OEP needs to go through review. The review will cover the areas described here: https://github.com/OpenEnergyPlatform/data-preprocessing/wiki and carried out by a team of the platform. The review itself is documented at the specified path and a badge is rewarded with regards to completeness.",
-      "type": "object",
-      "properties": {
-        "path": {
-          "description": "A URL or path string, that should be a permanent http(s) address directly linking to the documented review.",
-          "example": "https://www.example.com",
-          "type": ["string", "null"],
-          "badge": null,
-          "title": "Path"
-        },
-        "badge": {
-          "description": "A badge of either Bronze, Silver, Gold or Platinum is used to label the given metadata based on its quality.",
-          "example": "Platinum",
-          "type": ["string", "null"],
-          "badge": null,
-          "title": "Badge"
-        }
-      },
-      "additionalProperties": false,
-      "title": "Review",
-      "options": {
-        "hidden": true
-      }
-    },
-    "metaMetadata": {
-      "description": "Object. Description about the metadata themselves, their format, version and license. These fields should already be provided when you’re filling out your metadata.",
-      "type": "object",
-      "properties": {
-        "metadataVersion": {
-          "description": "Type and version number of the metadata.",
-          "example": "OEM-1.6.0",
-          "type": ["string", "null"],
-          "badge": null,
-          "title": "Metadata version"
-        },
-        "metadataLicense": {
-          "description": "Object describing the license of the provided metadata.",
-          "type": "object",
-          "properties": {
-            "name": {
-              "description": "SPDX identifier",
-              "example": "CC0-1.0",
-              "type": ["string", "null"],
-              "badge": null,
-              "title": "Name"
-            },
-            "title": {
-              "description": "Official (human readable) license title.",
-              "example": "Creative Commons Zero v1.0 Universal",
-              "type": ["string", "null"],
-              "badge": null,
-              "title": "Title"
-            },
-            "path": {
-              "description": "Url or path string, that is a fully qualified HTTP address.",
-              "example": "https://creativecommons.org/publicdomain/zero/1.0",
-              "type": ["string", "null"],
-              "badge": null,
-              "title": "Path"
-            }
-          },
-          "badge": null,
-          "title": "Metadata license",
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false,
-      "title": "Meta Metadata",
-      "options": {
-        "hidden": true
-      }
     }
   },
   "additionalProperties": false
