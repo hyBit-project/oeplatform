@@ -23,9 +23,24 @@
     </tr>
     <tr>
         <td style="padding:15px 15px 15px 15px;">Color</td>
-        <td><input name="tag_color" type="color" class="form-control" value="{{ color }}"/></td>
-    </tr>
+        <td>
+            <input name="tag_color" id="tag_color" type="color" class="form-control" value="{{ color }}"/>
+            <p class="mt-3">
+            hyBit Tags ColorSet - einfach durch Klicken wählen:
+                <div class="btn-group">
+                    <!-- materialui.co/colors, 400 -->
+                    <button class="btn btn-sm btn-outline-info text-black" style="border-color: #EF5350; background-color: #EF5350;" type="button" onclick="setColor('#EF5350')">Projektpartner</button>
+                    <button class="btn btn-sm btn-outline-info text-black" style="border-color: #FFA726; background-color: #FFA726;" type="button" onclick="setColor('#FFA726')">Cluster</button>
+                    <button class="btn btn-sm btn-outline-info text-black" style="border-color: #9CCC65; background-color: #9CCC65;" type="button" onclick="setColor('#9CCC65')">Szenario</button>
+                    <button class="btn btn-sm btn-outline-info text-black" style="border-color: #26A69A; background-color: #26A69A;" type="button" onclick="setColor('#26A69A')">Konfiguration</button>
+                    <button class="btn btn-sm btn-outline-info text-black" style="border-color: #AB47BC; background-color: #AB47BC;" type="button" onclick="setColor('#AB47BC')">Zugriffslevel</button>
+                    <button class="btn btn-sm btn-outline-info text-white" style="border-color: #000000; background-color: #000000;" type="button" onclick="setColor('#000000')">Sonstiges</button>
+                </div>
 
+            </p>
+
+        </td>
+    </tr>
     <tr>
         <td></td>
         <td style="padding-top:15px;">
@@ -42,8 +57,12 @@
         </td>
     </tr>
 </table>
-
-
 </form>
 
+    <script>
+        function setColor(color) {
+            console.log("color");
+            document.getElementById('tag_color').value = color;
+        }
+    </script>
 {% endblock %}

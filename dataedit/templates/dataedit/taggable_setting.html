@@ -9,25 +9,30 @@
     {% for t in selected %}
         <a href="/dataedit/view/{{ schema }}?query=&tags={{ t.id }}" class="btn tag" style="background:{{t.color}};color:{% readable_text_color t.color %}">{{ t.name }}</a>
     {% endfor %}
-    <button data-bs-toggle="collapse"  data-bs-target="#tag_handler" class="btn btn-add btn-circle">
+    <button data-bs-toggle="collapse"  data-bs-target="#tag_handler" class="btn btn-add btn-circle ms-2">
         {% fa5_icon 'plus' 'fas' %}
     </button>
     <div id="tag_handler" class="collapse">
+        <hr />
         <form action="/dataedit/tags/add/" method="post">
             {% csrf_token %}
-            <h4>Choose tags to attach:</h4>
-            {% for t in all_tags %}
-                <span  >
+            <h4 class="mb-2">Choose tags to attach</h4>
+            {% for t in all_tags|dictsort:'color' %}
+                {% ifchanged t.color %}<div class="clearfix mb-2"></div>{% endifchanged %}
+                <div class="float-start mx-2">
                     <input type="checkbox" class="hidden" name="tag_{{t.id}}" id="select_{{t.id}}" {% if t in selected %} checked {% endif %}>
-                    <label class="form-label" style="background:{{t.color}};color:{% readable_text_color t.color %}" class="btn tag" for="select_{{t.id}}">{{t.name}}</label>
-                </span>
+                    <label class="form-label" style="background:{{t.color}}; padding: 1px 5px; color:{% readable_text_color t.color %}" class="btn tag" for="select_{{t.id}}">{{t.name}}</label>
+                </div>
+
             {% endfor %}
+            <div class="clearfix"></div>
+            <hr />
             <input type="hidden" name="schema" value="{{schema}}"/>
             {% if table %}
                 <input type="hidden" name="table" value="{{table}}"/>
             {% endif %}
-            <input type="submit" class="btn btn-success" value="Apply">
-            <a type="button" class="btn btn-info" href="/dataedit/tags">Edit</a>
+            <input type="submit" class="btn btn-success text-white" value="Apply"><br />
+            <a type="button" class="btn btn-info mt-2 text-white" href="/dataedit/tags">Edit tags</a>
         </form>
     </div>
 </div>

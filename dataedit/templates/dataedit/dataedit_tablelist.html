@@ -26,16 +26,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for table, label, tags in tables %}
+        {% for table, label, tags, meta in tables %}
 
             <tr>
-                {% if label %}
-                    <td onclick="window.open('/dataedit/view/{{ schema }}/{{ table }}', name='_blank')">{{ label }}</td>
-                {% else %}
-                    <td onclick="window.open('/dataedit/view/{{ schema }}/{{ table }}', name='_blank')">{{ table }}</td>
-                {% endif %}
+                <td onclick="window.open('/dataedit/view/{{ schema }}/{{ table }}', name='_blank')">{% if meta %}{{ meta.title }}<br /><small class="text-muted">{{ meta.name }}</small>{% else %}Tabelle &raquo;{{ table }}&laquo;{% endif %}</td>
                 <td>
-                    {% for tag in tags %}
+                    {% for tag in tags|dictsort:'color'%}
                         <a class="btn tag" href="/dataedit/view/{{ schema }}?query=&tags={{ tag.id }}" style="background:{{tag.color}};color:{% readable_text_color tag.color %}">{{tag.name}}</a>
                     {% endfor %}
                 </td>

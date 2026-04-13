@@ -438,6 +438,7 @@ def listtables(request, schema_name):
             table.name,
             table.human_readable_name,
             tags.get(table.name, []),
+            table.oemetadata
         )
         for table in tables
     ]
@@ -965,6 +966,7 @@ class DataView(View):
             can_add = level >= login_models.WRITE_PERM
 
         table_label = table_obj.human_readable_name
+        table_meta = oemetadata
 
         table_views = DBView.objects.filter(table=table).filter(schema=schema)
         default = DBView(name="default", type="table", table=table, schema=schema)
@@ -1053,6 +1055,7 @@ class DataView(View):
             "table": table,
             "schema": schema,
             "table_label": table_label,
+            "table_meta": table_meta,
             # "tags": tags,
             "data": data,
             "display_message": display_message,
