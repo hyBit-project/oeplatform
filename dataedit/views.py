@@ -1384,6 +1384,42 @@ def add_existing_keyword_tag_to_table_tags(session, schema, table, keyword_tag_i
             session.close()  # Close the connection
 
 
+def set_tags_of_table(
+    table, schema, tag_ids_new
+):
+    session = create_oedb_session()
+
+    tag_ids_old = set(
+        tt.tag
+        for tt in session.query(TableTags).filter(
+            TableTags.table_name == table, TableTags.schema_name == schema
+        )
+    )
+
+    remove_table_tag_ids = tag_ids_old - tag_ids_new
+
+    # determine which tag ids have to be removed
+    delete_table_tag_ids = remove_table_tag_ids & tag_ids_old
+    for tid in delete_table_tag_ids:
+        if tid is None:
+            continue
+        session.query(TableTags).filter(
+            TableTags.table_name == table,
+            TableTags.schema_name == schema,
+            TableTags.tag == tid,
+        ).delete()
+
+    # determine which tag ids must be added
+    add_table_tag_ids = tag_ids_new - (tag_ids_old | remove_table_tag_ids)
+    for tid in add_table_tag_ids:
+        if tid is None:
+            continue
+        session.add(TableTags(table_name=table, schema_name=schema, tag=tid))
+
+    session.commit()
+    session.close()
+
+
 def get_tag_keywords_synchronized_metadata(
     table, schema, keywords_new=None, tag_ids_new=None
 ):
@@ -1504,7 +1540,8 @@ def get_tag_keywords_synchronized_metadata(
     session.commit()
     session.close()
 
-    metadata["keywords"] = keywords_new
+    ### Commented out to disable Keyword sync:
+    # metadata["keywords"] = keywords_new
 
     return metadata
 
@@ -1549,25 +1586,23 @@ def update_table_tags(request):
                 )
                 # update tags in db and harmonize metadata
 
-            metadata = get_tag_keywords_synchronized_metadata(
-                table=table, schema=schema, tag_ids_new=ids
-            )
+            ### Commented out to disable Keyword sync:
+            # metadata = get_tag_keywords_synchronized_metadata(
+            #     table=table, schema=schema, tag_ids_new=ids
+            # )
+
+            ### Added to still set tags, but without Keyword sync:
+            set_tags_of_table(table=table, schema=schema, tag_ids_new=ids)
 
             # TODO Add metadata to table (JSONB field) somewhere here
-            actions.set_table_metadata(
-                table=table, schema=schema, metadata=metadata, cursor=con
-            )
-
-    message = messages.success(
-        request,
-        'Please note that OEMetadata keywords and table tags are synchronized. When submitting new tags, you may notice automatic changes to the table tags on the OEP and/or the "Keywords" field in the metadata.',  # noqa
-        # noqa
-    )
+            # actions.set_table_metadata(
+            #     table=table, schema=schema, metadata=metadata, cursor=con
+            # )
 
     return render(
         request,
         "dataedit/dataview.html",
-        {"messages": message, "table": table, "schema": schema},
+        {"messages": [], "table": table, "schema": schema},
     )
 
 

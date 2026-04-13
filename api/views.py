@@ -294,26 +294,32 @@ class Metadata(APIView):
             cursor = actions.load_cursor_from_context(request.data)
 
             # update/sync keywords with tags before saving metadata
-            keywords = metadata.keywords or []
+
+            ### Commented out to disable Keyword sync:
+            # keywords = metadata.keywords or []
 
             # get_tag_keywords_synchronized_metadata returns the OLD metadata
             # but with the now harmonized keywords (harmonized with tags)
             # so we only copy the resulting keywords before storing the
             # metadata
-            _metadata = get_tag_keywords_synchronized_metadata(
-                table=table, schema=schema, keywords_new=keywords
-            )
-            metadata.keywords = _metadata["keywords"]
+
+            ### Commented out to disable Keyword sync:
+            # _metadata = get_tag_keywords_synchronized_metadata(
+            #     table=table, schema=schema, keywords_new=keywords
+            # )
+            # metadata.keywords = _metadata["keywords"]
 
             # Write oemetadata json to dataedit.models.tables
             # and to SQL comment on table
             actions.set_table_metadata(
                 table=table, schema=schema, metadata=metadata, cursor=cursor
             )
-            _metadata = get_tag_keywords_synchronized_metadata(
-                table=table, schema=schema, keywords_new=keywords
-            )
-            metadata.keywords = _metadata["keywords"]
+
+            ### Commented out to disable Keyword sync:
+            # _metadata = get_tag_keywords_synchronized_metadata(
+            #     table=table, schema=schema, keywords_new=keywords
+            # )
+            # metadata.keywords = _metadata["keywords"]
 
             actions.set_table_metadata(
                 table=table, schema=schema, metadata=metadata, cursor=cursor
