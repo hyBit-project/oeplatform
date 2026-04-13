@@ -1,10 +1,11 @@
 html {
-  --primaryColor1: #3b77a0;
-  --primaryColor2: #1f567d;
-  --primaryColor3: #0b3e62;
-  --primaryColor4: #072437;
-  --primaryColor5: #01090d;
-  --secondaryColor1: #bfd7ea;
+  --primaryColor1: #42a03b;
+  --primaryColor2: #4ca545;
+  --primaryColor3: #11620b;
+  --primaryColor4: #0b3707;
+  --primaryColor5: #020d01;
+  --secondaryColor1: #c2eabf;
+  --bs-secondary-rgb: #c2eabf;
   --grey1: #62869d;
   --white: #ffffff;
 }
