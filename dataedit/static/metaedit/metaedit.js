@@ -341,7 +341,7 @@ var MetaEdit = function(config) {
         window.JSONEditor.defaults.callbacks = {
           "autocomplete": {
             "search_name": function search(jseditor_editor, input) {
-              var url = "https://openenergyplatform.org/api/v0/oeo-search?query=" + input;
+              var url = "http://login-01.res.uni-bremen.de:8199/api/v0/oeo-search?query=" + input;
 
               return new Promise(function(resolve) {
                 fetch(url, {
@@ -435,7 +435,7 @@ var MetaEdit = function(config) {
         window.JSONEditor.defaults.callbacks = {
           "autocomplete": {
             "search_name": function search(jseditor_editor, input) {
-              var url = "https://openenergyplatform.org/api/v0/oeo-search?query=" + input;
+              var url = "http://login-01.res.uni-bremen.de:8199/api/v0/oeo-search?query=" + input;
 
               return new Promise(function(resolve) {
                 fetch(url, {
