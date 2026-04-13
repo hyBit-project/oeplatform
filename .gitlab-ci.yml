@@ -19,7 +19,7 @@ build-job:
   stage: build
   script:
     - echo $CONTAINER_IMAGE
-    - echo $HYBIT_CONFIG > base/settings_hybit.py
+    - echo -e $HYBIT_CONFIG > base/settings_hybit.py
     - docker build -t $CONTAINER_IMAGE -f docker/Dockerfile .
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker push $CONTAINER_IMAGE
